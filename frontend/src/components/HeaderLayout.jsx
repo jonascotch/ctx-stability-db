@@ -4,17 +4,17 @@ export default function LayoutHeader() {
 
     const selected = {
         color:'#222222',
-        backgroundColor: '#f4f4f9'
+        backgroundColor: '#658e9c'
     }
 
     return (
         <>
             <div className="header-container">
-                <Link to='/' className="header-link">
+                <Link to='/' className="header-title">
                     Características de Citotóxicos
                 </Link>
                 <nav className="header-link-container">
-                    <NavLink to='drugs' className="header-link" style={ ({isActive}) => isActive ? selected : null }>
+                    <NavLink to='medicines' className="header-link" style={ ({isActive}) => isActive ? selected : null }>
                         Lista
                     </NavLink>
                     <NavLink to='form' className="header-link" style={ ({isActive}) => isActive ? selected : null }>
@@ -23,7 +23,9 @@ export default function LayoutHeader() {
 
                 </nav>
             </div>
-            <Outlet />
+            <div className="outlet-container">
+                <Outlet />
+            </div>
         </>
     )
 

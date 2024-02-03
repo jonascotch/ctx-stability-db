@@ -1,5 +1,6 @@
 export default function Details() {
 
+
     return (
         <div className='app-container'>
             <div className='img-container data-container'>

@@ -41,8 +41,14 @@ img {
   width: 100%;
   height: 80px;
   max-width: 1600px;
-  padding-left: 20px;
+  padding: 0 20px;
   margin: 0 auto;
+}
+
+.header-title {
+  text-decoration: none;
+  color: var(--light-clr);
+  font-size: 24px;
 }
 
 .header-link {
@@ -57,12 +63,21 @@ img {
   color: var(--dark-clr)
 }
 
+/* Outlet container */
+
+.outlet-container {
+  max-width: 1600px;
+  background-color: var(--base-clr);
+  padding: 25px;
+  margin: 0 auto;
+}
+
 /* Details */
 
 .app-container {
   max-width: 1600px;
   width: 100%;
-  background-color: var(--base-clr);
+  background-color: var(--dark-clr);
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
@@ -85,17 +100,23 @@ img {
   border-radius: 20px;
   text-align: center;
   padding: 0px 20px 10px 20px;
-  font-size: 18px;
+  overflow: hidden;
 }
-
+.data-container *{ 
+  font-size: 18px
+}
 .data-header {
   color: var(--light-clr);
   margin-top: 10px;
   border-bottom: 2px solid var(--base-clr);
   line-height: 1;
   background-color: #658e9c;
-  padding: 4px 0;
+  padding: 14px 0;
   margin-bottom: 0;
+  margin-right: -20px;
+  margin-left: -20px;
+  margin-top: 0
+
 }
 
 .data-title {
@@ -119,4 +140,181 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.server-response {
+  text-align: center;
+}
+
+/* Form */
+
+fieldset{
+  margin-bottom: 20px;
+  padding: 0;
+  padding-bottom: 10px;
+  border-radius: 20px;
+}
+
+legend {
+  font-size: 18px;
+}
+
+fieldset >  * {
+  margin: 0 auto;
+  text-align: center;
+}
+
+label {
+  margin-top: 10px;
+  margin-bottom: 0;
+  display: block;
+  width: max-content;
+  padding: 5px 18px;
+  background-color: #8d3b72;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+
+.form-input {
+  width: 60%;
+  min-width: 290px;
+  height: 30px;
+  background-color: var(--light-clr);
+}
+
+input[type="text"], input[type='number'] {
+  display: block;
+  border: none;
+  border-radius: 10px;
+  text-indent: 5px;
+  text-align: center;
+  font-size: 20px;
+}
+
+form h4 {
+  margin: 5px 10px;
+}
+
+label[for="mg-radio"] , label[for="U-radio"] 
+{
+  display: inline;
+  border: none;
+  padding: 5px 10px;
+  margin-right: 10px;
+}
+
+.compatibility-container label {
+  display: inline-block;
+  margin-right: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#glucose, #saline {
+  margin-left:10px;
+}
+
+#fieldset-dilution, #fieldset-stability {
+  display: flex;
+  padding: 10px 20px 10px 20px;
+  gap: 20px;
+  justify-content: center;
+}
+
+.dilution-div, .stability-div {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 3px inset var(--accent-clr);
+  border-radius: 15px;
+  padding-bottom: 20px;
+  padding-top: 15px
+}
+
+.dilution-div h4, .stability-div h4 {
+  margin: 0;
+  padding: 0
+}
+
+select {
+  width: 60%;
+  min-width: 295px;
+  height: 33px;
+  border-radius: 10px;
+  background-color: var(--light-clr);
+  text-align: center;
+  font-size: 20px
+}
+
+input[type=file] {
+  width: 60%;
+  min-width: 290px;
+  color: #444;
+  padding: 5px;
+  background: var(--light-clr);
+  border-radius: 10px;
+  margin: 0 auto;
+  display: block;
+  font-size: 20px;
+}
+
+input[type=file]::file-selector-button {
+  margin-right: 20px;
+  border: none;
+  background: var(--base-clr);
+  border: 2px solid var(--accent-clr);
+  padding: 7px 15px;
+  border-radius: 10px;
+  color: var(--light-clr);
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
+
+input[type=file]::file-selector-button:hover {
+  background: var(--accent-clr);
+  border: 2px solid var(--base-clr)
+}
+
+
+#submit-btn {
+  display: block;
+  background-color: var(--accent-clr);
+  box-shadow: none;
+  border: none;
+  padding: 7px 40px;
+  margin: 0 auto;
+  border-radius: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--light-clr)
+}
+
+#submit-btn:hover {
+  transform: translate(-2px, -2px);
+}
+
+#submit-btn:focus {
+  transform: translate(2px, 2px);
+}
+
+.testtext {
+  color: yellow;
+  background: green
+}
+
+table, td, th {
+  text-align: center;
+  border: 1px solid black
+}
+
+th {
+  font-size: large;
+  color: purple;
+  background-color: var(--light-clr);
+}
+
+td {
+  width: 50%;
+  height: 30px;
 }
