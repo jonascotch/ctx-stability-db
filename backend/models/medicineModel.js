@@ -22,13 +22,13 @@ class Medicine {
     this.stabilityUndilutedTime = obj.stabilityUndilutedTime;
     this.image = obj.image;
     this.firstLetter = obj.dci[0].toLowerCase();
-    this.createdAt = Date.now();
+    this.createdAt = obj.createdAt || Date.now();
     this.updatedAt = Date.now();
   }
 
   validate() {
     for (let key in this) {
-        if (!this[key]) {
+        if (this[key] == null || this[key] === '') {
             this[key] = "N/A"
         }
     }

@@ -14,7 +14,7 @@ export default function LayoutHeader() {
                     Características de Citotóxicos
                 </Link>
                 <nav className="header-link-container">
-                    <NavLink to='medicines' className="header-link" style={ ({isActive}) => isActive ? selected : null }>
+                    <NavLink to='medicines/list' className="header-link" style={ ({isActive}) => isActive ? selected : null }>
                         Lista
                     </NavLink>
                     <NavLink to='form' className="header-link" style={ ({isActive}) => isActive ? selected : null }>

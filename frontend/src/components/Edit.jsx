@@ -1,32 +1,37 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { showAlert } from "/public/js/alert";
+import React from "react"
+import { useParams, useNavigate } from "react-router-dom"
+import { showAlert } from "../../public/js/alert"
 
-export default function Form() {
+export default function Edit() {
 
     const [formData, setFormData] = React.useState({
-            brandName:'',
-            dci:'',
-            pharmForm:'',
-            dose: '',
-            units: '',
-            reconstitutionSolvent: '',
-            reconstitutionVolume: '',
-            reconstitutionFinalConcentration: '',
-            saline: false,
-            glucose: false,
-            minSalineDilution: '',
-            maxSalineDilution: '',
-            minGlucoseDilution: '',
-            maxGlucoseDilution: '',
-            stabilityDilutedSolvent: 'default',
-            stabilityDilutedVolume: '',
-            stabilityDilutedCondition: 'default',
-            stabilityDilutedTime: '',
-            stabilityUndilutedCondition: 'default', 
-            stabilityUndilutedTime: ''
+        brandName:'',
+        dci:'',
+        pharmForm:'',
+        dose: '',
+        units: '',
+        reconstitutionSolvent: '',
+        reconstitutionVolume: '',
+        reconstitutionFinalConcentration: '',
+        saline: false,
+        glucose: false,
+        minSalineDilution: '',
+        maxSalineDilution: '',
+        minGlucoseDilution: '',
+        maxGlucoseDilution: '',
+        stabilityDilutedSolvent: 'default',
+        stabilityDilutedVolume: '',
+        stabilityDilutedCondition: 'default',
+        stabilityDilutedTime: '',
+        stabilityUndilutedCondition: 'default', 
+        stabilityUndilutedTime: '',
+        image:'',
+        id: '',
+        createdAt:''
 
-    })
+})
+
+    const params = useParams()
 
     const units = formData.units ? `${formData.units} / mL` : null
 
@@ -35,23 +40,58 @@ export default function Form() {
 
     const navigate = useNavigate()
 
-    const handleSubmit = async (e) => {
+React.useEffect(() => {
+
+    async function getData() {
+        try {
+
+            const response = await fetch(`http://localhost:5000/api/v1/medicines/details/${params.id}`, {
+                method:'GET'
+            })
+
+            const data = await response.json()
+
+            if (response.ok) {
+
+                setFormData(data.data)
+                console.log(formData)
+            } else {
+
+                showAlert('error', data.data)
+
+            }
+
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+    getData()   
+
+    return
+
+}, [params.id])
+
+    const handleEditSubmit = async (e) => {
         e.preventDefault()
         const dataToSubmit = new FormData(form, submitter)
+        dataToSubmit.append('image', formData.image)
+        dataToSubmit.append('createdAt', formData.createdAt)
         console.log(dataToSubmit)
         
         try {
-            const response = await fetch("http://localhost:5000/api/v1/medicines/", {
-                 method: 'POST',
-                 headers: {
-                     'Accept': 'application/json',
-                 },
-                 body: dataToSubmit
-            })
+            const response = await fetch(`http://localhost:5000/api/v1/medicines/details/${params.id}`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    body: dataToSubmit
+                })
             const data = await response.json()
             if (response.ok) {
                 navigate('/confirmAdd', {state: data.data})
-                showAlert('success', 'Dados inseridos com sucesso')
+                showAlert('success', 'Dados alterados com sucesso')
             } else {
                 showAlert('error', data.data)
 
@@ -69,9 +109,9 @@ export default function Form() {
     }
 
 
-    return (
+    return(
         <>
-            <form id="form" onSubmit={handleSubmit} method='POST' encType='multipart/form-data'>
+            <form id="form" onSubmit={handleEditSubmit}  method='PUT' encType='multipart/form-data'>
                 
                 <fieldset>
                     <legend>Designação</legend>
@@ -419,8 +459,10 @@ export default function Form() {
 
                 <fieldset>
                     <legend>Imagens</legend>
+                    <h3>Imagem Actual</h3>
+                    <img src={formData.image} />
 
-                    <label htmlFor="file">Foto do frasco</label>
+                    <label htmlFor="file">Nova Imagem</label>
                     <input 
                         type="file" 
                         name="file"
@@ -433,4 +475,3 @@ export default function Form() {
         </>
     )
 }
-
