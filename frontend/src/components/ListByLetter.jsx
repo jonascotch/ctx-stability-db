@@ -1,6 +1,6 @@
 import React from "react"
 import { useParams } from "react-router-dom"
-import { showAlert } from "../../public/js/alert"
+import { showAlert } from "../js/alert"
 import MedicineCard from "./MedicineCard"
 
 export default function ListByLetter() {

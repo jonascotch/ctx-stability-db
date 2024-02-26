@@ -7,6 +7,7 @@ import {
   updateMedicine,
 } from "../controllers/medicineControllers.js";
 import multer from "multer";
+import { checkToken } from "../controllers/authController.js";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -14,7 +15,7 @@ const upload = multer({ storage: storage });
 export const router = express.Router();
 
 router.route("/")
-      .post(upload.single("file"), addMedicine)
+      .post(checkToken, upload.single("file"), addMedicine)
       .get(getAllMedicines);
 
 router.route("/:letter")
@@ -22,4 +23,4 @@ router.route("/:letter")
 
 router.route("/details/:id")
       .get(getMedicineById)
-      .patch(upload.single("file"), updateMedicine);
+      .patch(checkToken, upload.single("file"), updateMedicine);

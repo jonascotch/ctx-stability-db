@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+
+// PREVIOUS VERSION OF SHOWALERT
 // type is 'success' or 'error'
 // export const showAlert = (type, msg, time = 7) => {
 // hideAlert();
@@ -7,7 +9,9 @@
 // document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
 // window.setTimeout(hideAlert, time * 1000);
 // };
-export const showAlert = (type, msg, time=7) => {
+
+
+export const showAlert = (type, msg, time=5) => {
 hideAlert();
 
 let title =''
@@ -19,6 +23,7 @@ if (type == 'error') {
 }
 
 const markup = `<div class="alert alert-${type}">${title}<p>${msg}<p></div>`;
+// document.querySelector('.outlet-container').insertAdjacentHTML('beforebegin', markup);
 document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
 window.setTimeout(hideAlert, time * 1000);
 };

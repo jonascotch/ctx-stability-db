@@ -1,7 +1,8 @@
 class Medicine {
   constructor(obj) {
     this.brandName = obj.brandName;
-    this.dci = obj.dci
+    this.dci = obj.dci;
+    this.maker = obj.maker;
     this.pharmForm = obj.pharmForm;
     this.dose = obj.dose;
     this.units = obj.units;
@@ -10,6 +11,8 @@ class Medicine {
     this.reconstitutionFinalConcentration = obj.reconstitutionFinalConcentration;
     this.saline = obj.saline ? true : false;
     this.glucose = obj.glucose ? true : false;
+    this.filter = obj.filter ? true : false;
+    this.lightprotection = obj.lightprotection ? true : false;
     this.maxSalineDilution = obj.maxSalineDilution;
     this.minSalineDilution = obj.minSalineDilution;
     this.minGlucoseDilution = obj.minGlucoseDilution;
@@ -20,6 +23,7 @@ class Medicine {
     this.stabilityDilutedTime = obj.stabilityDilutedTime;
     this.stabilityUndilutedCondition = obj.stabilityUndilutedCondition; 
     this.stabilityUndilutedTime = obj.stabilityUndilutedTime;
+    this.notes = obj.notes;
     this.image = obj.image;
     this.firstLetter = obj.dci[0].toLowerCase();
     this.createdAt = obj.createdAt || Date.now();

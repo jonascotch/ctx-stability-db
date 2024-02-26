@@ -68,18 +68,69 @@ h1, h2, h3, h4, h5, h6, p {
   color: var(--dark-clr)
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
 /* Outlet container */
 
 .outlet-container {
   max-width: 1600px;
   width: 100%;
   height: 100%;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 100px);
   background-color: var(--base-clr);
   padding: 25px;
   display: block;
   text-align: center;
   margin: 0 auto;
+}
+
+/* Footer */
+
+.footer-container {
+  background: var(--dark-clr);
+  height: 20px;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0;
+  padding-right: 20px;
+  text-align: right; 
+  font-family: monospace;
+  line-height: 1.5;
+}
+
+.footer-link {
+  text-decoration: none;
+  color: yellow;
+}
+
+/* Login */
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 24px;
+}
+
+#login-email, #login-password {
+  width: 300px;
+  width: 60%;
+  min-width: 290px;
+  height: 40px;
+  background-color: var(--light-clr);
+  text-align: center;
+  font-size: 24px;
+  border-radius: 10px;
+}
+
+.login-container button {
+  margin-top: 10px;
+  font-weight: 400;
 }
 
 /* Details */
@@ -108,7 +159,7 @@ h1, h2, h3, h4, h5, h6, p {
 .data-container {
   min-width: 300px;
   max-width: 600px;
-  min-height: 300px;
+  min-height: max-content;
   background-color: var(--light-clr);
   margin: 0;
   box-shadow: #222222;
@@ -173,6 +224,30 @@ h1, h2, h3, h4, h5, h6, p {
   margin-top: 3px
 }
 
+.notes-data-container {
+  min-width: 300px;
+  min-height: min-content;
+  background-color: var(--light-clr);
+  margin: 0;
+  box-shadow: #222222;
+  flex: 2 1 400px;
+  border: 3px solid var(--base-clr);
+  box-shadow: 6px 6px 10px 0px var(--accent-clr);
+  border-radius: 20px;
+  text-align: center;
+  padding: 50px 20px 10px 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  position: relative;
+  flex-basis: 100%;
+}
+
+#notes {
+  line-height: 2.25;
+}
+
 .edit-btn {
   width: 300px;
   height: 50px;
@@ -181,6 +256,7 @@ h1, h2, h3, h4, h5, h6, p {
   border: none;
   border-radius: 10px;
   color:  var(--light-clr);
+  flex-basis: 34%;
 }
 
 .edit-btn:hover {
@@ -195,13 +271,11 @@ h1, h2, h3, h4, h5, h6, p {
   color: var(--light-clr);
   font-size: 14px;
   align-self: flex-end;
-  width: 100%;
-  margin: 0;
+  margin: -15px 0;
   padding: 0;
-  margin-top: -50px;
-  position: relative;
-  top: 0;
   text-align: right;
+  flex-basis: 100%;
+  transform: translateY(0px);
 }
 
 /* FORM */
@@ -272,7 +346,7 @@ label[for="mg-radio"] , label[for="U-radio"]
   margin-bottom: 10px;
 }
 
-#glucose, #saline {
+#glucose, #saline, #filter, #lightprotection {
   margin-left:10px;
 }
 
@@ -283,8 +357,21 @@ label[for="mg-radio"] , label[for="U-radio"]
   justify-content: center;
 }
 
+#fieldset-dilution {
+  flex-direction: column;
+}
+
+.solvents-div {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .dilution-div, .stability-div {
-  width: 80%;
+  width: 40%;
+  min-width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -297,6 +384,28 @@ label[for="mg-radio"] , label[for="U-radio"]
 .dilution-div h4, .stability-div h4 {
   margin: 0;
   padding: 0
+}
+
+.filter-light-div {
+  flex-basis: 100%;
+  display: flex;
+  gap: 20px
+}
+
+textarea {
+  width: 60%;
+  min-width: 290px;
+  color: #444;
+  padding: 5px;
+  background: var(--light-clr);
+  border-radius: 10px;
+  margin: 10px auto;
+  display: block;
+  font-size: 20px;
+  min-height: 100px;
+  height: min-content;
+  text-align: left;
+  text-indent: 5px;
 }
 
 select {
@@ -339,7 +448,7 @@ input[type=file]::file-selector-button:hover {
 }
 
 
-#submit-btn {
+.submit-btn {
   display: block;
   background-color: var(--accent-clr);
   box-shadow: none;
@@ -352,11 +461,11 @@ input[type=file]::file-selector-button:hover {
   color: var(--light-clr)
 }
 
-#submit-btn:hover {
+.submit-btn:hover {
   transform: translate(-2px, -2px);
 }
 
-#submit-btn:focus {
+.submit-btn:focus {
   transform: translate(2px, 2px);
 }
 
@@ -451,7 +560,7 @@ td {
 
 .alert {
   position: fixed;
-  top: 0;
+  top: 80px;
   right:0;
   left: 0;
   z-index: 9999;

@@ -5,7 +5,7 @@ import { FaCheckCircle,
          FaRegSnowflake,
          FaSun
         } from "react-icons/fa";
-import { IconStyles } from "../../public/js/IconStyles";
+import IconStyles from "../js/IconStyles";
 
 
 export default function AddedData() {
@@ -27,6 +27,10 @@ export default function AddedData() {
                     <tr>
                         <td>DCI</td>
                         <td>{state.dci}</td>
+                    </tr>
+                    <tr>
+                        <td>Titular de AIM</td>
+                        <td>{state.maker}</td>
                     </tr>
                     <tr>
                         <td>Forma Farmacêutica</td>
@@ -64,6 +68,14 @@ export default function AddedData() {
                     <tr>
                         <td>Soro Glucosado</td>
                         <td>{state.glucose ? <FaCheckCircle style={IconStyles.green}/> : <FaTimesCircle style={IconStyles.red}/> }</td>
+                    </tr>
+                    <tr>
+                        <td>Filtro</td>
+                        <td>{state.filter ? <FaCheckCircle style={IconStyles.green}/> : <FaTimesCircle style={IconStyles.red}/> }</td>
+                    </tr>
+                    <tr>
+                        <td>Proteção da luz</td>
+                        <td>{state.lightprotection ? <FaCheckCircle style={IconStyles.green}/> : <FaTimesCircle style={IconStyles.red}/> }</td>
                     </tr>
 
                     <tr>
@@ -125,6 +137,12 @@ export default function AddedData() {
                     <tr>
                         <td>Tempo</td>
                         <td>{state.stabilityUndilutedTime == 'N/A'? <FaTimesCircle style={IconStyles.red}/> : state.stabilityUndilutedTime}</td>
+                    </tr>
+                    <tr>
+                        <th colSpan={2}>Outras informações</th>
+                    </tr>
+                    <tr>
+                        <td colSpan={2}>{state.notes}</td>
                     </tr>
 
                     <tr>

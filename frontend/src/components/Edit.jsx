@@ -1,12 +1,14 @@
-import React from "react"
+import {useState, useEffect} from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { showAlert } from "../../public/js/alert"
+import { showAlert } from "../js/alert"
+import { useAuthContext } from "../context/useAuthContext"
 
 export default function Edit() {
 
-    const [formData, setFormData] = React.useState({
+    const [formData, setFormData] = useState({
         brandName:'',
         dci:'',
+        maker:'',
         pharmForm:'',
         dose: '',
         units: '',
@@ -15,6 +17,8 @@ export default function Edit() {
         reconstitutionFinalConcentration: '',
         saline: false,
         glucose: false,
+        filter: false,
+        lightprotection: false,
         minSalineDilution: '',
         maxSalineDilution: '',
         minGlucoseDilution: '',
@@ -25,10 +29,7 @@ export default function Edit() {
         stabilityDilutedTime: '',
         stabilityUndilutedCondition: 'default', 
         stabilityUndilutedTime: '',
-        image:'',
-        id: '',
-        createdAt:''
-
+        notes:''
 })
 
     const params = useParams()
@@ -40,7 +41,13 @@ export default function Edit() {
 
     const navigate = useNavigate()
 
-React.useEffect(() => {
+    const { user, idToken } = useAuthContext()
+
+    if (!user) {
+        throw new Error('You cannot access this page')
+    }
+
+useEffect(() => {
 
     async function getData() {
         try {
@@ -54,7 +61,6 @@ React.useEffect(() => {
             if (response.ok) {
 
                 setFormData(data.data)
-                console.log(formData)
             } else {
 
                 showAlert('error', data.data)
@@ -66,10 +72,11 @@ React.useEffect(() => {
         }
     }
 
-    getData()   
+    if (user) {
+        getData()   
+    }
 
-    return
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [params.id])
 
     const handleEditSubmit = async (e) => {
@@ -85,16 +92,20 @@ React.useEffect(() => {
                     method: 'PATCH',
                     headers: {
                         'Accept': 'application/json',
+                        'Authorization': `Bearer ${idToken}`,
+                        'auth': user.auth
                     },
                     body: dataToSubmit
                 })
             const data = await response.json()
+
             if (response.ok) {
+                console.log('ok')
                 navigate('/confirmAdd', {state: data.data})
                 showAlert('success', 'Dados alterados com sucesso')
             } else {
-                showAlert('error', data.data)
 
+                showAlert('error', data.data)
             }
 
         } catch(e) {
@@ -109,218 +120,255 @@ React.useEffect(() => {
     }
 
 
-    return(
-        <>
-            <form id="form" onSubmit={handleEditSubmit}  method='PUT' encType='multipart/form-data'>
-                
-                <fieldset>
-                    <legend>Designação</legend>
+    return (
 
-                    <label htmlFor="brandName">Nome Comercial</label>
-                    <input
-                        className="form-input" 
-                        type="text"
-                        id="brandName" 
-                        name="brandName"
-                        value={formData.brandName}
-                        onChange={handleChange}
-                        required
-                    />                  
+        <form id="form" onSubmit={handleEditSubmit} method='POST' encType='multipart/form-data'>
+            
+            <fieldset>
+                <legend>Designação</legend>
 
-                    <label htmlFor="dci">DCI</label>
-                    <input
-                        className="form-input" 
-                        type="text"
-                        id="dci" 
-                        name="dci" 
-                        value={formData.dci}
-                        onChange={handleChange}
-                        required
+                <label htmlFor="brandName">Nome Comercial</label>
+                <input
+                    className="form-input" 
+                    type="text"
+                    id="brandName" 
+                    name="brandName"
+                    value={formData.brandName}
+                    onChange={handleChange}
+                    required
+                />                  
+
+                <label htmlFor="dci">DCI</label>
+                <input
+                    className="form-input" 
+                    type="text"
+                    id="dci" 
+                    name="dci" 
+                    value={formData.dci}
+                    onChange={handleChange}
+                    required
+                />
+
+                <label htmlFor="maker">Titular de AIM</label>
+                <input
+                    className="form-input" 
+                    type="text"
+                    id="maker" 
+                    name="maker" 
+                    value={formData.maker}
+                    onChange={handleChange}
+                    required
+                />
+
+                <label htmlFor="pharmForm">Forma Farmacêutica</label>
+                <input
+                    className="form-input" 
+                    type="text"
+                    id="pharmForm" 
+                    name="pharmForm" 
+                    value={formData.pharmForm}
+                    onChange={handleChange}
+                    required
                     />
 
-                    <label htmlFor="pharmForm">Forma Farmacêutica</label>
-                    <input
-                        className="form-input" 
-                        type="text"
-                        id="pharmForm" 
-                        name="pharmForm" 
-                        value={formData.pharmForm}
-                        onChange={handleChange}
-                        required
-                        />
+                <label htmlFor="dose">Dose</label>
+                <input
+                    className="form-input" 
+                    type="number"
+                    id="dose" 
+                    name="dose" 
+                    value={formData.dose}
+                    onChange={handleChange}
+                    required
+                />
 
-                    <label htmlFor="dose">Dose</label>
-                    <input
-                        className="form-input" 
-                        type="number"
-                        id="dose" 
-                        name="dose" 
-                        value={formData.dose}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <div>
-                        <h4>Unidades</h4>
-                        <label htmlFor="mg-radio">mg
-                        <input 
-                            id="mg-radio" 
-                            type="radio" 
-                            name="units" 
-                            value="mg"
-                            checked={formData.units === "mg"}
-                            onChange={handleChange}
-                        />
-                        </label>
-
-                        <label htmlFor="U-radio">UI
-                        <input 
-                            id="U-radio" 
-                            type="radio" 
-                            name="units" 
-                            value="UI"
-                            checked={formData.units === "UI"}
-                            onChange={handleChange}                     
-                        />
-                        </label>                        
-                    </div>
-
-                </fieldset>
-
-                <fieldset>
-                    <legend>Reconstituição</legend>
-                    <label htmlFor="reconstitutionSolvent">Solvente</label>
-                    <input
-                        className="form-input" 
-                        type="text"
-                        id="reconstitutionSolvent" 
-                        name="reconstitutionSolvent" 
-                        value={formData.reconstitutionSolvent}
+                <div>
+                    <h4>Unidades</h4>
+                    <label htmlFor="mg-radio">mg
+                    <input 
+                        id="mg-radio" 
+                        type="radio" 
+                        name="units" 
+                        value="mg"
+                        checked={formData.units === "mg"}
                         onChange={handleChange}
                     />
+                    </label>
 
-                    <label htmlFor="reconstitutionVolume">Volume ( mL )</label>
-                    <input
-                        className="form-input" 
-                        type="number"
-                        id="reconstitutionVolume" 
-                        name="reconstitutionVolume" 
-                        value={formData.reconstitutionVolume}
-                        onChange={handleChange}
+                    <label htmlFor="U-radio">UI
+                    <input 
+                        id="U-radio" 
+                        type="radio" 
+                        name="units" 
+                        value="UI"
+                        checked={formData.units === "UI"}
+                        onChange={handleChange}                     
+                    />
+                    </label>                        
+                </div>
+
+            </fieldset>
+
+            <fieldset>
+                <legend>Reconstituição</legend>
+                <label htmlFor="reconstitutionSolvent">Solvente</label>
+                <input
+                    className="form-input" 
+                    type="text"
+                    id="reconstitutionSolvent" 
+                    name="reconstitutionSolvent" 
+                    value={formData.reconstitutionSolvent}
+                    onChange={handleChange}
+                />
+
+                <label htmlFor="reconstitutionVolume">Volume ( mL )</label>
+                <input
+                    className="form-input" 
+                    type="number"
+                    id="reconstitutionVolume" 
+                    name="reconstitutionVolume" 
+                    value={formData.reconstitutionVolume}
+                    onChange={handleChange}
+                />
+
+                <label htmlFor="reconstitutionFinalConcentration">Concentração {units ? units : null}</label>
+                <input
+                    className="form-input" 
+                    type="number"
+                    id="reconstitutionFinalConcentration" 
+                    name="reconstitutionFinalConcentration" 
+                    value={formData.reconstitutionFinalConcentration}
+                    onChange={handleChange}
+                    required
                     />
 
-                    <label htmlFor="reconstitutionFinalConcentration">Concentração {units ? units : null}</label>
-                    <input
-                        className="form-input" 
-                        type="number"
-                        id="reconstitutionFinalConcentration" 
-                        name="reconstitutionFinalConcentration" 
-                        value={formData.reconstitutionFinalConcentration}
-                        onChange={handleChange}
-                        required
+            </fieldset>
+
+            <fieldset>
+                <legend>Compatibilidade</legend>
+                <div className="compatibility-container">
+                    <label htmlFor="saline">Cloreto de Sódio 0,9%
+                    <input 
+                        type="checkbox"
+                        id="saline"
+                        name="saline"
+                        checked={formData.saline}
+                        value= {true}
+                        onChange={(e) => setFormData((prev) => ({...prev, saline: e.target.checked}))}
                         />
+                    </label>
 
-                </fieldset>
+                    <label htmlFor="glucose">Glucose 5%
+                    <input 
+                        type="checkbox"
+                        id="glucose"
+                        name="glucose"
+                        value= {true}
+                        checked={formData.glucose}
+                        onChange={(e) => setFormData((prev) => ({...prev, glucose: e.target.checked}))}
+                        />
+                    </label>
+                </div>
 
-                <fieldset>
-                    <legend>Compatibilidade</legend>
-                    <div className="compatibility-container">
-                        <label htmlFor="saline">Cloreto de Sódio 0,9%
+            </fieldset>
+
+            <fieldset id="fieldset-dilution">
+                <legend>Diluição</legend>
+                <div className="solvents-div">
+                { 
+                    formData.saline || formData.glucose
+                    ? 
+                        <>
+                            <div 
+                            className="saline-dilution dilution-div"
+                            style={{display: formData.saline ? "" :"none"}}
+                            >
+                                <h4>Diluição em Cloreto de Sódio 0,9%</h4>
+                                <label htmlFor="min-saline-dilution">Minímo {units ? `(${units})`: ""}</label>
+                                <input
+                                    className="form-input" 
+                                    type="number"
+                                    id="minSalineDilution" 
+                                    name="minSalineDilution" 
+                                    value={formData.minSalineDilution}
+                                    onChange={handleChange}
+                                    />
+
+                                <label htmlFor="max-saline-dilution">Maxímo {units ? `(${units})`: ""}</label>
+                                <input
+                                    className="form-input" 
+                                    type="number"
+                                    id="maxSalineDilution" 
+                                    name="maxSalineDilution" 
+                                    value={formData.maxSalineDilution}
+                                    onChange={handleChange}
+                                    />
+
+                            </div>
+
+                            <div 
+                            className="glucose-dilution dilution-div"
+                            style={{display: formData.glucose ? "" :"none"}}
+                            >
+                                <h4>Diluição em Glucose 5%</h4>
+                                <label htmlFor="min-glucose-dilution">Minímo {units ? `(${units})`: ""}</label>
+                                <input
+                                    className="form-input" 
+                                    type="number"
+                                    id="minGlucoseDilution" 
+                                    name="minGlucoseDilution" 
+                                    value={formData.minGlucoseDilution}
+                                    onChange={handleChange}
+                                    // style={{display: formData.glucose ? "block": "none"}}
+                                    />
+
+                                <label htmlFor="max-glucose-dilution">Maxímo {units ? `(${units})`: ""}</label>
+                                <input
+                                    className="form-input" 
+                                    type="number"
+                                    id="maxGlucoseDilution" 
+                                    name="maxGlucoseDilution" 
+                                    value={formData.maxGlucoseDilution}
+                                    onChange={handleChange}
+                                    // style={{display: formData.glucose ? "block": "none"}}
+                                    />
+
+                            </div>
+                        </>
+                    : <h4 style={{textAlign:"center"}}>Escolha os solventes compatíveis</h4>
+                }
+                </div>
+                <div className="filter-light-div">
+                    <label htmlFor="filter">Filtro 0,2 micra
                         <input 
                             type="checkbox"
-                            id="saline"
-                            name="saline"
-                            checked={formData.saline}
+                            id="filter"
+                            name="filter"
+                            checked={formData.filter}
                             value= {true}
-                            onChange={(e) => setFormData((prev) => ({...prev, saline: e.target.checked}))}
+                            onChange={(e) => setFormData((prev) => ({...prev, filter: e.target.checked}))}
                             />
                         </label>
 
-                        <label htmlFor="glucose">Glucose 5%
+                        <label htmlFor="filter">Proteção da luz
                         <input 
                             type="checkbox"
-                            id="glucose"
-                            name="glucose"
+                            id="lightprotection"
+                            name="lightprotection"
+                            checked={formData.lightprotection}
                             value= {true}
-                            checked={formData.glucose}
-                            onChange={(e) => setFormData((prev) => ({...prev, glucose: e.target.checked}))}
+                            onChange={(e) => setFormData((prev) => ({...prev, lightprotection: e.target.checked}))}
                             />
                         </label>
-                    </div>
+                </div>
 
-                </fieldset>
+            </fieldset>
 
-                <fieldset id="fieldset-dilution">
-                    <legend>Diluição</legend>
+            <fieldset id="fieldset-stability">
+                <legend>Estabilidade</legend>
+                    <div className="solvents-div">
 
-                    { 
-                        formData.saline || formData.glucose
-                        ? 
-                            <>
-                                <div 
-                                className="saline-dilution dilution-div"
-                                style={{display: formData.saline ? "" :"none"}}
-                                >
-                                    <h4>Diluição em Cloreto de Sódio 0,9%</h4>
-                                    <label htmlFor="min-saline-dilution">Minímo {units ? `(${units})`: ""}</label>
-                                    <input
-                                        className="form-input" 
-                                        type="number"
-                                        id="minSalineDilution" 
-                                        name="minSalineDilution" 
-                                        value={formData.minSalineDilution}
-                                        onChange={handleChange}
-                                        />
-
-                                    <label htmlFor="max-saline-dilution">Maxímo {units ? `(${units})`: ""}</label>
-                                    <input
-                                        className="form-input" 
-                                        type="number"
-                                        id="maxSalineDilution" 
-                                        name="maxSalineDilution" 
-                                        value={formData.maxSalineDilution}
-                                        onChange={handleChange}
-                                        />
-
-                                </div>
-
-                                <div 
-                                className="glucose-dilution dilution-div"
-                                style={{display: formData.glucose ? "" :"none"}}
-                                >
-                                    <h4>Diluição em Glucose 5%</h4>
-                                    <label htmlFor="min-glucose-dilution">Minímo {units ? `(${units})`: ""}</label>
-                                    <input
-                                        className="form-input" 
-                                        type="number"
-                                        id="minGlucoseDilution" 
-                                        name="minGlucoseDilution" 
-                                        value={formData.minGlucoseDilution}
-                                        onChange={handleChange}
-                                        // style={{display: formData.glucose ? "block": "none"}}
-                                        />
-
-                                    <label htmlFor="max-glucose-dilution">Maxímo {units ? `(${units})`: ""}</label>
-                                    <input
-                                        className="form-input" 
-                                        type="number"
-                                        id="maxGlucoseDilution" 
-                                        name="maxGlucoseDilution" 
-                                        value={formData.maxGlucoseDilution}
-                                        onChange={handleChange}
-                                        // style={{display: formData.glucose ? "block": "none"}}
-                                        />
-
-                                </div>
-                            </>
-                        : <h4 style={{textAlign:"center"}}>Escolha os solventes compatíveis</h4>
-                    }               
-                </fieldset>
-
-                <fieldset id="fieldset-stability">
-                    <legend>Estabilidade</legend>
-
-                    {
+                        {
                         formData.saline || formData.glucose 
                         ? 
                         <>
@@ -408,70 +456,79 @@ React.useEffect(() => {
                             </div>                        
                         </>
                         
-                        : null}
-
-                    
-                    <div className="stability-div">
-
-                        <h4>Não diluido</h4>
-                        <label 
-                            htmlFor="stabilityUndilutedCondition"
-                            >
-                            Condições
-                        </label>
-                        <select
-                            id="stabilityUndilutedCondition"
-                            name="stabilityUndilutedCondition"
-                            value={formData.stabilityUndilutedCondition}
-                            onChange={handleChange}
-                        >
-                            <option
-                                disabled
-                                value='default'
-                            >Escolha
-                            </option>
-                            
-                            <option 
-                                value='cold'
-                            >2 - 8º C
-                            </option>
-                            <option
-                                value='hot'
-                            >Temperatura ambiente
-                            </option>
-                        </select>
+                        : null
+                        }
                         
-                        <label 
-                            htmlFor="stabilityUndilutedTime"
+                        <div className="stability-div">
+
+                            <h4>Não diluido</h4>
+                            <label 
+                                htmlFor="stabilityUndilutedCondition"
+                                >
+                                Condições
+                            </label>
+                            <select
+                                id="stabilityUndilutedCondition"
+                                name="stabilityUndilutedCondition"
+                                value={formData.stabilityUndilutedCondition}
+                                onChange={handleChange}
                             >
-                            Tempo
-                        </label>
-                        <input
-                            className="form-input" 
-                            type="text"
-                            id="stabilityUndilutedTime" 
-                            name="stabilityUndilutedTime" 
-                            value={formData.stabilityUndilutedTime}
-                            onChange={handleChange}
-                            />
+                                <option
+                                    disabled
+                                    value='default'
+                                >Escolha
+                                </option>
+                                
+                                <option 
+                                    value='cold'
+                                >2 - 8º C
+                                </option>
+                                <option
+                                    value='hot'
+                                >Temperatura ambiente
+                                </option>
+                            </select>
+                            
+                            <label 
+                                htmlFor="stabilityUndilutedTime"
+                                >
+                                Tempo
+                            </label>
+                            <input
+                                className="form-input" 
+                                type="text"
+                                id="stabilityUndilutedTime" 
+                                name="stabilityUndilutedTime" 
+                                value={formData.stabilityUndilutedTime}
+                                onChange={handleChange}
+                                />
+                        </div>
                     </div>
-                </fieldset>
 
-                <fieldset>
-                    <legend>Imagens</legend>
-                    <h3>Imagem Actual</h3>
-                    <img src={formData.image} />
+            </fieldset>
 
-                    <label htmlFor="file">Nova Imagem</label>
-                    <input 
-                        type="file" 
-                        name="file"
-                        id="file"
-                        accept="image/*"
-                        />
-                </fieldset>
-                <button id='submit-btn' type="submit">Submit</button>
-            </form>
-        </>
+            <fieldset>
+                <legend>Outras informações</legend>
+                <textarea 
+                    className="form-input"
+                    name="notes"
+                    value={formData.notes}
+                    onChange={handleChange}
+                ></textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend>Imagens</legend>
+
+                <label htmlFor="file">Foto do frasco</label>
+                <input 
+                    type="file" 
+                    name="file"
+                    id="file"
+                    accept="image/*"
+                    />
+            </fieldset>
+            <button id='submit-btn' className="submit-btn" type="submit">Submit</button>
+        </form>
     )
 }

@@ -1,6 +1,5 @@
 import LetterCard from "./LetterCard.tsx"
-
-// import { getMedicines } from "../../public/js/getMedicines"
+import {PulseLoader} from 'react-spinners'
 
 import React from "react"
 
@@ -40,7 +39,11 @@ export default function List() {
                 const values = data.data
     
                 if (response.ok){
-                    setLetters(values)
+                    setTimeout(
+                        () => setLetters(values),
+                        2000
+                    )
+                    
                     
                 } else {
                     throw new Error('something went wrong!')
@@ -72,7 +75,7 @@ export default function List() {
                     </div>
                 )
             })
-            : <h1>Loading...</h1>
+            : <PulseLoader color="#8d3b72" />
             }
         </div>
     )

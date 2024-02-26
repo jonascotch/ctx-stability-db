@@ -1,6 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import config from './config.js';
+import { initializeApp } from "firebase/app";
+import config from "./config.js"
 
-const firebaseApp = initializeApp(config.firebaseConfig);
+const firebaseApp = initializeApp(config.firebaseConfig)
 
-export default firebaseApp;
+export default firebaseApp

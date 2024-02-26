@@ -1,12 +1,13 @@
-import React from "react"
+import {useState, useEffect} from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { showAlert } from "../../public/js/alert"
+import { showAlert } from "../js/alert"
 import { FaTimesCircle,
          FaCheckCircle,
          FaRegSnowflake,
          FaSun
         } from 'react-icons/fa'
-import { IconStyles } from "../../public/js/IconStyles"
+import IconStyles from "../js/IconStyles"
+import { useAuthContext } from "../context/useAuthContext"
 
 export default function Details() {
 
@@ -14,9 +15,10 @@ export default function Details() {
     const navigate = useNavigate()
 
     const id = data.state.id
-    console.log(id)
 
-    const [medicineData, setMedicineData] = React.useState({})
+    const [medicineData, setMedicineData] = useState({})
+
+    const {user} = useAuthContext()
 
     const handleEditClick = () => {
         navigate(`/medicines/details/${medicineData.id}/edit`)
@@ -32,9 +34,11 @@ export default function Details() {
 
     const date = `${year}/${month}/${day}`
 
-    console.log(day)
+    if (medicineData.notes) {
+        document.getElementById('notes').innerHTML = medicineData.notes.replaceAll('\n', '<br/>')
+    }
 
-    React.useEffect(() => {
+    useEffect(() => {
 
         async function getData() {
             try {
@@ -80,8 +84,8 @@ export default function Details() {
                     <h3 className='data-text'>{`${medicineData.dci} ${medicineData.pharmForm} ${medicineData.dose} ${medicineData.units}`}</h3>
                 </div>
                 <div>
-                    <p className='data-title'>Fabricante</p>
-                    <h3 className='data-text'>Accord Healthcare, S.L.U.</h3>
+                    <p className='data-title'>Titular de AIM</p>
+                    <h3 className='data-text'>{medicineData.maker}</h3>
                 </div>
             </div>
             <div className='reconstitution-data-container data-container'>
@@ -99,6 +103,30 @@ export default function Details() {
                     <h3 className='data-text'>{`${medicineData.reconstitutionFinalConcentration} ${medicineData.units}/mL `}</h3>
                 </div>
             </div>
+            
+            <div className='dilution-data-container data-container'>
+                <h2 className='data-header'>Diluição</h2> 
+                {(medicineData.maxSalineDilution !='N/A' || medicineData.minSalineDilution != 'N/A') &&
+                    <div>
+                        <p className='data-title'>Cloreto de Sódio 0,9%</p>
+                        <h3 className='data-text'>{`Min: ${medicineData.minSalineDilution === "N/A" ? medicineData.minSalineDilution : medicineData.minSalineDilution + ' ' + medicineData.units + '/mL'} / Max: ${medicineData.maxSalineDilution === "N/A" ? medicineData.maxSalineDilution : medicineData.maxSalineDilution + ' ' + medicineData.units + '/mL'}`}</h3>
+                        
+                    </div>}
+                {(medicineData.maxGlucoseDilution != 'N/A' || medicineData.minGlucoseDilution != 'N/A') && 
+                    <div>
+                        <p className='data-title'>Glucose 5%</p>
+                        <h3 className='data-text'>{`Min: ${medicineData.minGlucoseDilution === "N/A" ? medicineData.minGlucoseDilution : medicineData.minGlucoseDilution + ' ' + medicineData.units + '/mL'} / Max: ${medicineData.maxGlucoseDilution === "N/A" ? medicineData.maxGlucoseDilution : medicineData.maxGlucoseDilution + ' ' + medicineData.units + '/mL'}`}</h3>
+                    </div>}
+                <div>
+                    <p className='data-title'>Filtro</p>
+                    <h3 className='data-text'>{medicineData.filter ? <FaCheckCircle style={IconStyles.green}/> : <FaTimesCircle style={IconStyles.red}/> }</h3>
+                </div>
+                <div>
+                    <p className='data-title'>Proteção da luz</p>
+                    <h3 className='data-text'>{medicineData.lightprotection ? <FaCheckCircle style={IconStyles.green}/> : <FaTimesCircle style={IconStyles.red}/> }</h3>
+                </div>
+            </div>
+
             <div className='stability-data-container data-container'>
                 <h2 className='data-header'>Estabilidade</h2>
                 
@@ -145,20 +173,7 @@ export default function Details() {
                         </div>
                     </div>}
             </div>
-            <div className='dilution-data-container data-container'>
-                <h2 className='data-header'>Diluição</h2> 
-                {(medicineData.maxSalineDilution !='N/A' || medicineData.minSalineDilution != 'N/A') &&
-                    <div>
-                        <p className='data-title'>Cloreto de Sódio 0,9%</p>
-                        <h3 className='data-text'>{`Min: ${medicineData.minSalineDilution === "N/A" ? medicineData.minSalineDilution : medicineData.minSalineDilution + ' ' + medicineData.units + '/mL'} / Max: ${medicineData.maxSalineDilution === "N/A" ? medicineData.maxSalineDilution : medicineData.maxSalineDilution + ' ' + medicineData.units + '/mL'}`}</h3>
-                        
-                    </div>}
-                {(medicineData.maxGlucoseDilution != 'N/A' || medicineData.minGlucoseDilution != 'N/A') && 
-                    <div>
-                        <p className='data-title'>Glucose 5%</p>
-                        <h3 className='data-text'>{`Min: ${medicineData.minGlucoseDilution === "N/A" ? medicineData.minGlucoseDilution : medicineData.minGlucoseDilution + ' ' + medicineData.units + '/mL'} / Max: ${medicineData.maxGlucoseDilution === "N/A" ? medicineData.maxGlucoseDilution : medicineData.maxGlucoseDilution + ' ' + medicineData.units + '/mL'}`}</h3>
-                    </div>}
-            </div>
+
             <div className='compatibility-data-container data-container'>
                 <h2 className='data-header'>Compatibilidade</h2>
                 <div>
@@ -171,8 +186,19 @@ export default function Details() {
 
                 </div>
             </div>
-            <button className="edit-btn" onClick={handleEditClick}>Edit Data</button>
+            <div className='notes-data-container'>
+                <h2 className='data-header'>Outras informações</h2>
+                <div>
+                    <h3 className='data-text' id="notes"></h3>
+                </div>
+            </div>
+            {
+                user ?
+                <button className="edit-btn" onClick={handleEditClick}>Edit Data</button>:
+                null
+            }
             <div className="updatedat-div"><p>Atualizado em {date}</p></div>
         </div>
+
     )
 }
