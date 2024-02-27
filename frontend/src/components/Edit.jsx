@@ -52,7 +52,7 @@ useEffect(() => {
     async function getData() {
         try {
 
-            const response = await fetch(`http://localhost:5000/api/v1/medicines/details/${params.id}`, {
+            const response = await fetch(`${import.meta.env.VITE_REMOTE_URL}/api/v1/medicines/details/${params.id}`, {
                 method:'GET'
             })
 
@@ -84,10 +84,9 @@ useEffect(() => {
         const dataToSubmit = new FormData(form, submitter)
         dataToSubmit.append('image', formData.image)
         dataToSubmit.append('createdAt', formData.createdAt)
-        console.log(dataToSubmit)
         
         try {
-            const response = await fetch(`http://localhost:5000/api/v1/medicines/details/${params.id}`,
+            const response = await fetch(`${import.meta.env.VITE_REMOTE_URL}/api/v1/medicines/details/${params.id}`,
                 {
                     method: 'PATCH',
                     headers: {
@@ -100,7 +99,6 @@ useEffect(() => {
             const data = await response.json()
 
             if (response.ok) {
-                console.log('ok')
                 navigate('/confirmAdd', {state: data.data})
                 showAlert('success', 'Dados alterados com sucesso')
             } else {

@@ -43,7 +43,7 @@ export default function Details() {
         async function getData() {
             try {
 
-                const response = await fetch(`http://localhost:5000/api/v1/medicines/details/${id}`, {
+                const response = await fetch(`${import.meta.env.VITE_REMOTE_URL}/api/v1/medicines/details/${id}`, {
                     method:'GET'
                 })
 

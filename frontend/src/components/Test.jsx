@@ -1,34 +1,32 @@
 
-import { useAuthContext } from "../context/useAuthContext"
-import { FaSpinner } from "react-icons/fa"
+// import { useAuthContext } from "../context/useAuthContext"
+// import { FaSpinner } from "react-icons/fa"
 
 
-export default function Test() {
+// export default function Test() {
     
-    const {user, idToken} = useAuthContext()
+//     const {user, idToken} = useAuthContext()
 
 
-    async function handleClick() {
+//     async function handleClick() {
 
 
-        const response = await fetch("http://localhost:5000/api/v1/test/", {
-                 method: 'POST',
-                 headers: {
-                     'Accept': 'application/json',
-                     'Authorization': `Bearer ${idToken}`
-                 },
-        })
+//         const response = await fetch(`${import.meta.env.VITE_REMOTE_URL}/api/v1/test/`, {
+//                  method: 'POST',
+//                  headers: {
+//                      'Accept': 'application/json',
+//                      'Authorization': `Bearer ${idToken}`
+//                  },
+//         })
 
-        const json = await response.json()
-
-        console.log('Response: ', json)
-    }
+//         const json = await response.json()
+//     }
     
-    return (
-        user ?
-        <button onClick={handleClick}>{user.email}</button>:
+//     return (
+//         user ?
+//         <button onClick={handleClick}>{user.email}</button>:
         
-        <FaSpinner />
-    )
-}
+//         <FaSpinner />
+//     )
+// }
 

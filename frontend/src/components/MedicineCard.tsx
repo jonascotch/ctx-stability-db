@@ -8,7 +8,6 @@ export default function MedicineCard(props) {
     const navigate = useNavigate()
 
     function handleClick(e) {  
-        console.log(e.target.id)
 
         return navigate(`/medicines/details/${e.target.id}`, {state: {id: e.target.id}})
     }

@@ -14,7 +14,7 @@ export default function ListByLetter() {
         async function getMedicines() {
 
             try {
-                const response = await fetch(`http://localhost:5000/api/v1/medicines/${params.letter}`)
+                const response = await fetch(`${import.meta.env.VITE_REMOTE_URL}/api/v1/medicines/${params.letter}`)
     
                 const data = await response.json()
 
@@ -33,8 +33,6 @@ export default function ListByLetter() {
         getMedicines()
 
     }, [params.letter])
-
-    console.log(medicines, Date.now())
 
     return (
         <div className="medicine-card-container">

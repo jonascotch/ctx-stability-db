@@ -86,7 +86,6 @@ export const addMedicine = async (req, res, next) => {
 export const getAllMedicines = async (req, res, next) => {
   try {
     const dataRef = db.collection("medicines");
-    console.log(req.auth);
 
     // used with client firebase sdk
     // const data = await getDocs(medicinesCollectionRef);
@@ -178,7 +177,6 @@ export async function updateMedicine(req, res, next) {
   try {
     if (req.file) {
       // get file name from old image
-      console.log("há imagem");
       const firstCut = req.body.image.split("%2F")[1];
       const imageName = firstCut.split("?")[0];
 
@@ -198,8 +196,6 @@ export async function updateMedicine(req, res, next) {
 
       // reference of image to store in firestore
       req.body.image = await getDownloadURL(storageRef);
-    } else {
-      console.log("afinal não há");
     }
 
     const newMedicine = new Medicine(req.body);

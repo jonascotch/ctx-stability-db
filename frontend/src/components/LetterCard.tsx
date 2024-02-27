@@ -7,8 +7,6 @@ export default function LetterCard(props) {
     const navigate = useNavigate()
 
     function handleClick(e) {  
-        console.log(e.target.key)
-
         return navigate(`${letter}`)
     }
 

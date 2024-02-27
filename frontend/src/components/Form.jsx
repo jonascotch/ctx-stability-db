@@ -44,7 +44,6 @@ export default function Form() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const dataToSubmit = new FormData(form, submitter)
-        console.log(dataToSubmit)
         
         try {
             const response = await fetch("http://localhost:5000/api/v1/medicines/", {

@@ -27,7 +27,7 @@ export default function List() {
         // tried with async/await
         async function getData() {
             try {
-                const response = await fetch("http://localhost:5000/api/v1/medicines", {
+                const response = await fetch(`${import.meta.env.VITE_REMOTE_URL}/api/v1/medicines`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -62,7 +62,6 @@ export default function List() {
 
     const firstLetters = letters.map(letter => letter.firstLetter)
     const htmlLetters = Array.from(new Set(firstLetters)).sort()
-    console.log(firstLetters, htmlLetters, Date.now())
 
     return (       
 
