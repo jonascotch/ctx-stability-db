@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "homepage": "https://jonascotch.github.io/ctx-stability-db/frontend/"
+    "homepage": "https://jonascotch.github.io/ctx-stability-db/"
   },
   "dependencies": {
     "firebase": "^10.8.0",
