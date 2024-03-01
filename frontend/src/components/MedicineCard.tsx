@@ -7,15 +7,15 @@ export default function MedicineCard(props) {
     const id:string = props.id
     const navigate = useNavigate()
 
-    function handleClick(e) {  
+    function handleClick() {
 
-        return navigate(`/medicines/details/${e.target.id}`, {state: {id: e.target.id}})
+        return navigate(`/medicines/details/${id}`, {state: {id: id}})
     }
 
 
     return(
         <div id={id} className="medicine-card" onClick={handleClick}>
-            {name}
+            <h3>{name}</h3>
         </div>
     )
 }

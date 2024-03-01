@@ -6,14 +6,14 @@ export default function LetterCard(props) {
     const letter:string = props.letter
     const navigate = useNavigate()
 
-    function handleClick(e) {  
+    function handleClickLetter(e) {  
         return navigate(`${letter}`)
     }
 
 
     return(
-        <div key={letter} className="letter-card" onClick={handleClick}>
-            {letter}
+        <div key={letter} className="letter-card" onClick={handleClickLetter}>
+            <h2>{letter}</h2>
         </div>
     )
 }
