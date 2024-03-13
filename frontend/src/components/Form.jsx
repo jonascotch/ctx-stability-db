@@ -46,7 +46,7 @@ export default function Form() {
         const dataToSubmit = new FormData(form, submitter)
         
         try {
-            const response = await fetch("http://localhost:5000/api/v1/medicines/", {
+            const response = await fetch(`${import.meta.env.VITE_REMOTE_URL}/api/v1/medicines`, {
                  method: 'POST',
                  headers: {
                      'Accept': 'application/json',

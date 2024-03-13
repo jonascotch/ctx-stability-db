@@ -17,5 +17,5 @@ app.listen(config.port, () =>
 app.use("/api/v1/medicines", medicineRouter);
 
 app.get("/", (req, res) => {
-  res.json({ message: "Hello!" });
+  res.send('Hello!');
 });
