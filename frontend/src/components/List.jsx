@@ -41,7 +41,7 @@ export default function List() {
                 if (response.ok){
                     setTimeout(
                         () => setLetters(values),
-                        2000
+                        750
                     )
                     
                     
